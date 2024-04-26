@@ -1,13 +1,13 @@
-const Aluno = require('../models/Aluno')
+const Professor = require('../models/Professor')
 
-class AlunoController {
+class ProfessorController {
 
     async listarTodos(req, res) {
         try {
-            const alunos = await Aluno.findAll()
-            res.json(alunos)
+            const professores = await Professor.findAll()
+            res.json(professores)
         } catch (error) {
-            res.status(500).json({ error: 'Não é possível listar os alunos' })
+            res.status(500).json({ error: 'Não é possível listar os professores' })
         }
     }
 
@@ -32,7 +32,7 @@ class AlunoController {
                 return res.status(400).json({ message: 'A data de nascimento não está no formato correto' })
             }
 
-            const aluno = await Aluno.create({
+            const professor = await Professor.create({
                 email: email,
                 password: password,
                 nome: nome,
@@ -40,11 +40,11 @@ class AlunoController {
                 celular: celular
             })
 
-            res.status(201).json(aluno)
+            res.status(201).json(professor)
 
         } catch (error) {
             console.log(error.message)
-            res.status(500).json({ error: 'Não possível cadastrar o aluno' })
+            res.status(500).json({ error: 'Não possível cadastrar o Profesor' })
         }
     }
 
@@ -53,22 +53,22 @@ class AlunoController {
 
             const { id } = req.params
 
-            const aluno = await Aluno.findByPk(id)
+            const professor = await Professor.findByPk(id)
 
-            if (!aluno) {
-                return res.status(404).json({ message: "Aluno não encontrado!" })
+            if (!professor) {
+                return res.status(404).json({ message: "Professor não encontrado!" })
             }
 
-            res.json(aluno)
+            res.json(professor)
 
         } catch (error) {
             console.log(error.message)
             res.status(500).json({
-                error: 'Não é possível listar o aluno específico',
+                error: 'Não é possível listar o professor específicado',
                 error: error
             })
         }
     }
 }
 
-module.exports = new AlunoController()
+module.exports = new ProfessorController()
