@@ -38,3 +38,5 @@ https://sequelize.org/docs/v6/core-concepts/model-basics/
 `npm install dotenv`
 ### instalar o JsonWebToken ( JWT )
 `npm install jsonwebtoken`
+### instalar o bcryptjs
+`npm install bcryptjs`
