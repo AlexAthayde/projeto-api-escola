@@ -2,6 +2,33 @@ const Curso = require('../models/Curso')
 
 class CursoController {
 
+    async cadastrar (req, res) {
+        try {
+            const nome = req.body.nome
+            const duracao_horas = req.body.duracao_horas
+    
+            if (!nome) {
+                return res.status(400).json({ message: "O nome é obrigatório" })
+            }
+    
+            if (!(duracao_horas >= 40 && duracao_horas <= 200)) {
+                return res.status(400).json({
+                    message: "A duração do curso deve ser entre 40 e 200 horas"
+                })
+            }
+    
+            const curso = await Curso.create({
+                nome: nome,
+                duracao_horas: duracao_horas
+            })
+    
+            res.status(201).json(curso)
+        } catch (error) {
+            console.log(error.message)
+            res.status(500).json({ error: 'Não possível cadastrar o curso' })
+        }
+    }
+    
     async listarTodos(req, res) {
         try {
             let params = {}
@@ -29,43 +56,26 @@ class CursoController {
         }
     }
 
-    async cadastrar (req, res) {
+    async listarUm(req, res) {
         try {
-            const nome = req.body.nome
-            const duracao_horas = req.body.duracao_horas
-    
-            if (!nome) {
-                return res.status(400).json({ message: "O nome é obrigatório" })
+
+            const { id } = req.params
+
+            const curso = await Curso.findByPk(id)
+
+            if (!curso) {
+                return res.status(404).json({ message: "Curso não encontrado!" })
             }
-    
-            if (!(duracao_horas >= 40 && duracao_horas <= 200)) {
-                return res.status(400).json({
-                    message: "A duração do curso deve ser entre 40 e 200 horas"
-                })
-            }
-    
-            const curso = await Curso.create({
-                nome: nome,
-                duracao_horas: duracao_horas
-            })
-    
-            res.status(201).json(curso)
+
+            res.json(curso)
+
         } catch (error) {
             console.log(error.message)
-            res.status(500).json({ error: 'Não possível cadastrar o curso' })
+            res.status(500).json({
+                error: 'Não é possível listar o curso específicado',
+                error: error
+            })
         }
-    }
-
-    async excluir (req, res) {
-        const { id } = req.params
-
-        Curso.destroy({
-            where: {
-                id: id
-            }
-        }) // DELETE cursos from cursos where id = 1
-    
-        res.status(204).json({})
     }
 
     async alterar (req, res) {
@@ -84,6 +94,17 @@ class CursoController {
         res.json(curso)
     }
 
+    async excluir (req, res) {
+        const { id } = req.params
+
+        Curso.destroy({
+            where: {
+                id: id
+            }
+        }) // DELETE cursos from cursos where id = 1
+    
+        res.status(204).json({})
+    }
 }
 
 module.exports = new CursoController()

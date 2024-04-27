@@ -25,5 +25,3 @@ Aluno.beforeSave(async (aluno) => {
 })
 
 module.exports = Aluno
-
-

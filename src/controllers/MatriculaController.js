@@ -48,6 +48,42 @@ class MatriculaController {
             res.status(500).json({messagem: 'Houve um erro ao cadastrar ao matricula'})
         }
     }
+
+    async listarTodos(req, res) {
+        try {
+            const matriculas = await Matricula.findAll()
+            
+            if (matriculas.length === 0) {
+                return res.status(400).json({messagem: "Não existe nenhuma matricula cadastrada."})
+            }
+
+            res.json(matriculas)
+        } catch (error) {
+            res.status(500).json({ error: 'Não é possível listar os matriculas' })
+        }
+    }
+
+    async listarUm(req, res) {
+        try {
+
+            const { id } = req.params
+
+            const matricula = await Matricula.findByPk(id)
+
+            if (!matricula) {
+                return res.status(404).json({ message: "Matricula não encontrada!" })
+            }
+
+            res.json(matricula)
+
+        } catch (error) {
+            console.log(error.message)
+            res.status(500).json({
+                error: 'Não é possível listar a matricula específicada',
+                error: error
+            })
+        }
+    }
 }
 
 module.exports = new MatriculaController()

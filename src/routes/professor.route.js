@@ -7,5 +7,7 @@ const professorRoutes = new Router()
 professorRoutes.post('/', ProfessorController.cadastrar)
 professorRoutes.get('/', auth, ProfessorController.listarTodos)
 professorRoutes.get('/:id', auth, ProfessorController.listarUm)
+professorRoutes.put("/:id", auth, ProfessorController.alterar)
+professorRoutes.delete("/:id", auth, ProfessorController.excluir)
 
 module.exports = professorRoutes

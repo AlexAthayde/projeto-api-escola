@@ -4,9 +4,12 @@ const { auth } = require("../middleware/auth")
 const CursoController = require("../controllers/CursoController")
 const cursoRoutes = new Router()
 
-cursoRoutes.get("/", auth, CursoController.listarTodos)
-cursoRoutes.post("/", auth, CursoController.cadastrar)
-cursoRoutes.put("/:id", auth, CursoController.alterar)
-cursoRoutes.delete("/:id", auth, CursoController.excluir)
+cursoRoutes.use(auth)
+
+cursoRoutes.post("/", CursoController.cadastrar)
+cursoRoutes.get("/", CursoController.listarTodos)
+cursoRoutes.get('/:id', CursoController.listarUm)
+cursoRoutes.put("/:id", CursoController.alterar)
+cursoRoutes.delete("/:id", CursoController.excluir)
 
 module.exports = cursoRoutes

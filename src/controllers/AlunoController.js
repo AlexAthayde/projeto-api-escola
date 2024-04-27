@@ -2,15 +2,6 @@ const Aluno = require('../models/Aluno')
 
 class AlunoController {
 
-    async listarTodos(req, res) {
-        try {
-            const alunos = await Aluno.findAll()
-            res.json(alunos)
-        } catch (error) {
-            res.status(500).json({ error: 'Não é possível listar os alunos' })
-        }
-    }
-
     async cadastrar(req, res) {
         try {
 
@@ -48,6 +39,15 @@ class AlunoController {
         }
     }
 
+    async listarTodos(req, res) {
+        try {
+            const alunos = await Aluno.findAll()
+            res.json(alunos)
+        } catch (error) {
+            res.status(500).json({ error: 'Não é possível listar os alunos' })
+        }
+    }
+
     async listarUm(req, res) {
         try {
 
@@ -68,6 +68,34 @@ class AlunoController {
                 error: error
             })
         }
+    }
+
+    async alterar (req, res) {
+        const { id } = req.params
+
+        const aluno = await Aluno.findByPk(id)
+    
+        if (!aluno) {
+            return res.status(404).json({ message: 'Aluno não encontrado' })
+        }
+    
+        aluno.update(req.body)
+    
+        await aluno.save()
+    
+        res.json(aluno)
+    }
+
+    async excluir (req, res) {
+        const { id } = req.params
+
+        Aluno.destroy({
+            where: {
+                id: id
+            }
+        }) // DELETE cursos from cursos where id = 1
+    
+        res.status(204).json({})
     }
 }
 
