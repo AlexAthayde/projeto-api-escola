@@ -4,8 +4,10 @@ const { auth } = require('../middleware/auth')
 const MatriculaController = require('../controllers/MatriculaController')
 const matriculaRoutes = new Router()
 
-matriculaRoutes.post('/', auth, MatriculaController.cadastrar)
-matriculaRoutes.get('/', auth, MatriculaController.listarTodos)
-matriculaRoutes.get('/:id', auth, MatriculaController.listarUm)
+matriculaRoutes.use(auth)
+
+matriculaRoutes.post('/', MatriculaController.cadastrar)
+matriculaRoutes.get('/', MatriculaController.listarTodos)
+matriculaRoutes.get('/:id', MatriculaController.listarUm)
 
 module.exports = matriculaRoutes
